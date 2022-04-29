@@ -132,9 +132,92 @@ function moveUp() {
       }
     }
   }
-  
+
   slideUp();
   mergeUp();
+  if (flag) {
+    createCellBlock(1);
+    drawCells();
+  }
+}
+
+function moveDown() {
+  let flag = false;
+
+  function slideDown() {
+    for (let i = 3; i >= 0; i--) {
+      for (let j = 3; j >= 0; j--) {
+        if (cellElements[i][j] == 0 && i != 0) {
+          for (let k = i; k >= 0; k--) {
+            if (cellElements[k][j] != 0) {
+              cellElements[i][j] = cellElements[k][j];
+              cellElements[k][j] = 0;
+              flag = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function mergeDown() {
+    for (let i = 3; i > 0; i--) {
+      for (let j = 3; j >= 0; j--) {
+        if (cellElements[i][j] != 0 && cellElements[i][j] == cellElements[i - 1][j]) {
+          cellElements[i][j] *= 2;
+          score += cellElements[i][j];
+          cellElements[i - 1][j] = 0;
+          flag = true;
+          slideDown();
+        }
+      }
+    }
+  }
+  slideDown();
+  mergeDown();
+  if (flag) {
+    createCellBlock(1);
+    drawCells();
+  }
+}
+
+function moveLeft() {
+  let flag = false;
+
+  function slideLeft() {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (cellElements[i][j] == 0 && j != 3) {
+          for (let k = j; k < 4; k++) {
+            if (cellElements[i][k] != 0) {
+              cellElements[i][j] = cellElements[i][k];
+              cellElements[i][k] = 0;
+              flag = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function mergeLeft() {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (cellElements[i][j] != 0 && cellElements[i][j] == cellElements[i][j + 1]) {
+          cellElements[i][j] *= 2;
+          score += cellElements[i][j];
+          cellElements[i][j + 1] = 0;
+          flag = true;
+          slideLeft();
+          drawScoreBoard();
+        }
+      }
+    }
+  }
+  slideLeft();
+  mergeLeft();
   if (flag) {
     createCellBlock(1);
     drawCells();
