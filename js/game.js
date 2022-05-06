@@ -223,3 +223,53 @@ function moveLeft() {
     drawCells();
   }
 }
+
+function moveRight() {
+  let flag = false;
+
+  function slideRight() {
+    for (let i = 3; i >= 0; i--) {
+      for (let j = 3; j >= 0; j--) {
+        if (cellElements[i][j] == 0 && j != 0) {
+          for (let k = j; k >= 0; k--) {
+            if (cellElements[i][k] != 0) {
+              cellElements[i][j] = cellElements[i][k];
+              cellElements[i][k] = 0;
+              flag = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function mergeRight() {
+    for (let i = 3; i > 0; i--) {
+      for (let j = 3; j >= 0; j--) {
+        if (cellElements[i][j] != 0 && cellElements[i][j] == cellElements[i][j - 1]) {
+          cellElements[i][j] *= 2;
+          score += cellElements[i][j];
+          cellElements[i][j - 1] = 0;
+          flag = true;
+          slideRight();
+          drawScoreBoard();
+        }
+      }
+    }
+  }
+  slideRight();
+  mergeRight();
+  if (flag) {
+    createCellBlock(1);
+    drawCells();
+  }
+}
+document.addEventListener('keydown', function (event) {
+  if (event.keyCode == 38) moveUp();
+  else if (event.keyCode == 40) moveDown();
+  else if (event.keyCode == 37) moveLeft();
+  else if (event.keyCode == 39) moveRight();;
+});
+createCellBlock(2);
+drawCells(0, 0);
