@@ -6,13 +6,13 @@ const game = {
   emptyCells: 16,
   score: 0,
   history: '0',
+  scoreStorage: null,
   start() {
     game.init();
     game.play.onKeyDown();
     game.play.onTouchStart();
     game.play.onTouchMove();
     game.play.onTouchEnd();
-    game.play.reload();
   },
   init() {
     this.canvas = document.getElementById('canvas');
@@ -21,8 +21,9 @@ const game = {
     this.canvas.height = 550;
     this.draw.produce();
     this.draw.produce();
+    this.scoreStorage = new AJAXStorage();
     if (this.history) {
-      document.getElementById('history').innerText = `Record: ${String(this.history)}`;
+      document.getElementById('history').innerText = `Record: ${this.history}`;
     }
   },
   move(dir) {
@@ -67,8 +68,13 @@ const game = {
     }
     this.draw.produce();
     if (this.emptyCells == 0) {
-      alert('game over');
+      let user = prompt('GAME OVER. Enter your name', '').trim();
+      let score = this.score;
+      game.scoreStorage.addValue(user, score);
       this.historyScore(this.score);
+      this.showResult();
+      this.canvas.style.display = 'none';
+      document.getElementById('btn').style.display = 'none';
     }
     this.draw.block();
   },
@@ -79,8 +85,17 @@ const game = {
     if (scores > this.history) {
       this.history = scores;
     }
+  },
+  showResult() {
+    var hash = this.scoreStorage.getKeys();
+    var resultHTML = '';
+    var keys = Object.keys(hash);
+    keys.forEach(key => {
+      resultHTML += `${key} : ${hash[key]} <br>`;
+    });
+    document.getElementById('highScores').innerHTML = resultHTML;
   }
-};
+}
 
 window.addEventListener('load', () => {
   game.start();

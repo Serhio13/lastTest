@@ -39,21 +39,5 @@ game.play = {
       game.dir = game.play.keycom[event.key];
       game.move(game.dir);
     });
-  },
-  reload() {
-    document.getElementById('btn').addEventListener('click', () => {
-      game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
-      game.emptyCells = 16;
-      game.score = 0;
-      game.draw.map = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-      ];
-      document.getElementById('score').innerText = `Score: ${String(game.score)}`;
-      game.draw.block();
-      game.start();
-    });
   }
-};
+}

@@ -93,4 +93,4 @@ game.draw = {
     game.ctx.arcTo(x, y, x + 1, y, marginWidth * 0.7);
     game.ctx.fill();
   } //отрисовка блока//
-};
+}
